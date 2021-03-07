@@ -1,12 +1,11 @@
+import sys
 from collections import OrderedDict
 
 stage = int(input())
 case = []
 
-for i in range(stage):
-    n_c = input()
-    seq = input().split()
-    case.append(seq)
+for i in range(stage*2):
+    case.append(sys.stdin.readline())
 
 
 def lim (record_seq):
@@ -25,6 +24,8 @@ def lim (record_seq):
 
     lim(record_seq)
 
-for i in range(stage):
-    record =  []
-    lim(case[i])
+
+print(case)
+# for i in range(stage):
+#     record =  []
+#     lim(case[i])
