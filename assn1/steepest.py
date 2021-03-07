@@ -66,3 +66,6 @@ for i in range(stage):
     final_idx = find_point(sorted)
     ans = "{} {} {} {}".format(sorted[final_idx][0], sorted[final_idx][1], sorted[final_idx+1][0], sorted[final_idx+1][1])
     ans_list.append(ans)
+
+for ans in ans_list:
+    print(ans)
