@@ -1,0 +1,8 @@
+#include <iostream>
+
+int main() {
+    int n1,n2;
+    std::cin>>n1>>n2;
+    std::cout<<n1+n2;
+}
+// memory 2016KB, 0ms
