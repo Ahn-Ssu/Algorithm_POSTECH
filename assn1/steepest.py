@@ -31,6 +31,7 @@ def steepness(x1,x2,y1,y2):
 #             result.append(right[0])
 #             right = right[1:]
 #     return result
+
 def quick_sort(arr):
     def sort(low, high):
         if high <= low:
