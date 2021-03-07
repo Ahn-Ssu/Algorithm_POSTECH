@@ -49,23 +49,23 @@ def find_point(point_list):
     return max_idx
 
 
-ans_list= []
 stage = int(sys.stdin.readline())
+ans_list= [0] * stage
 
-
-for i in range(stage):
+for iter in range(stage):
     input_num = int(sys.stdin.readline())
-    case = []
+    case = [0] * input_num
     for i in range(input_num):
         
         # case.append(sys.stdin.readline().split())
-        case.append(list(map(int, sys.stdin.readline().split())))
+        # case.append(list(map(int, sys.stdin.readline().split())))
+        case[i] = list(map(int, sys.stdin.readline().split()))
 
     sorted = merge_sort(case)
 
     final_idx = find_point(sorted)
     ans = "{} {} {} {}".format(sorted[final_idx][0], sorted[final_idx][1], sorted[final_idx+1][0], sorted[final_idx+1][1])
-    ans_list.append(ans)
+    ans_list[iter] = ans
 
 for ans in ans_list:
     print(ans)
