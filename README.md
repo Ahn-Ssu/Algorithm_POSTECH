@@ -1,4 +1,4 @@
-# Algorithm_POSTECH
+# Algorithm
 1. 2021 봄학기, 한동대학교 -> 포스텍 학점교류 수업 
 2. 백준 
 3. 코드포스
