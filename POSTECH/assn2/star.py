@@ -1,39 +1,42 @@
 import sys
 
 
-# stage = int(sys.stdin.readline())
-# ans_list= [0] * stage
+stage = int(sys.stdin.readline())
+request = [0] * stage
 
-# for iter in range(stage):
-#     input_num = int(sys.stdin.readline())
-#     case = [0] * input_num
-#     for i in range(input_num):
-        
-#         case[i] = list(map(int, sys.stdin.readline().split()))
-
-
-#     # ans = "{} {} {} {}".format(sorted[final_idx][0], sorted[final_idx][1], sorted[final_idx+1][0], sorted[final_idx+1][1])
-#     # ans = "%s %s %s %s" % (case[final_idx][0], case[final_idx][1], case[final_idx+1][0], case[final_idx+1][1])
-#     # f_str = "f'{" + '}{'.join([f'x{i}' for i in range(num_vars)]) + "}'"
-#     # ans_list[iter] = ans
-
-# output = ""
-# for ans in ans_list:
-#     output += ans +'\n'
-# print(output)
-
-
-
-star_cage = ("*****", " * *", "  *")
-
-input_n = 3
-
-for iteration in range(input_n):
+for iteration in range(stage):
+    request[iteration] = int(sys.stdin.readline())
     
+output =""
+
+for input_n in request:
     
+    star_cage =  ("*****", " * *", "  *")
+
+    if input_n == 3 :
+        for line in star_cage:
+            output += line+'\n'
+    
+    else:
+
+        while input_n/2 != len(star_cage):
+            new_cage = ()
+            
+            for line in star_cage:
+                new_cage += (" "*len(star_cage)+line,)
+            
+            for line in star_cage:
+                new_cage += (line + (" "*(2*len(star_cage) - len(line))) +line, )
+
+            star_cage = new_cage
 
 
+        for line in star_cage:
+
+            output += " "*len(star_cage)+line+'\n'
+
+        for line in star_cage:
+            output += line + (" "*(2*len(star_cage) - len(line))) +line + "\n"
 
 
-
-
+print(output)
