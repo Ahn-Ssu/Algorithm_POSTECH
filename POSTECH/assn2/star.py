@@ -39,4 +39,4 @@ for input_n in request:
             output += line + (" "*(2*len(star_cage) - len(line))) +line + "\n"
 
 
-print(output)
+print(output, end="")
