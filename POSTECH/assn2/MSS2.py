@@ -44,20 +44,26 @@ def find_mss(target_seq, n):
 
         leftMax = find_mss(target_seq[:mid], mid)
         rigthMax = find_mss(target_seq[mid+1:], mid)
-        # center = find_mss(target_seq[mid:mid+1], 2)
+        center = find_mss(target_seq[mid:mid+1], 2)
 
+        # center 가 제일 큰 경우 
+        if center > leftMax:  # 경계에 위치한 친구들이 제일 큰 경우 그 친구들 리턴
+            if center > rigthMax:
+                return center
+        
+        if center > rigthMax: # 경계에 위치한 친구들이 제일 큰 경우 그 친구들 리턴
+            if center > leftMax:
+                return center 
+
+        # 왼쪽이 제일 큰 경우 
         if leftMax > rigthMax :
-            if target_seq[mid+1] > leftMax :
-                return find_mss(target_seq[mid:mid+1], 2)
-            elif target_seq[mid+1] > 0 :
-                return leftMax + target_seq[mid+1]
-            else:
-                return leftMax
-        
-        
-             
-        
-            
-        
 
-        
+            #오른쪽의 합이 중앙의 뺏긴 값보다 크면 오른쪽이랑 더해서 리턴
+            # 작으면 뺏긴 값 체크 
+            
+
+            # 경계에 뺏긴 값이 양수인지 확인
+            if target_seq[mid+1] > 0 : 
+                return leftMax + target_seq[mid+1] # 양수면 더해서 리턴
+            else :
+                return leftMax # 아니면 걍 리턴  
