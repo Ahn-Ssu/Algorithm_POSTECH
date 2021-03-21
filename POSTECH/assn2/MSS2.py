@@ -2,10 +2,6 @@ import sys
 sys.setrecursionlimit(100000)
 import operator 
 from functools import reduce
-# seq = tuple(map(int,sys.stdin.readline().split()))
-
-seq = (1,-3,5,-7,10,-9,6,-4,2)
-n = len(seq) 
 
 
 
@@ -40,30 +36,71 @@ def find_mss(target_seq, n):
 
     else:
 
-        mid = n/2
-
+        mid = int(n/2)
+        # print("now mid :",mid)
+        # print("now seq :", target_seq)
         leftMax = find_mss(target_seq[:mid], mid)
-        rigthMax = find_mss(target_seq[mid+1:], mid)
-        center = find_mss(target_seq[mid:mid+1], 2)
+        rigthMax = find_mss(target_seq[mid:], mid)
+        # center = find_mss(target_seq[mid:mid+1], 2)
 
-        # center 가 제일 큰 경우 
-        if center > leftMax:  # 경계에 위치한 친구들이 제일 큰 경우 그 친구들 리턴
+        left_subMax = target_seq[mid-1]
+        right_subMax = target_seq[mid]
+
+        left_ss = 0
+        right_ss = 0
+
+        for one in target_seq[mid-1::-1]: #분기점을 포함하는 연속된 시퀀스의 최대 
+            left_ss += one 
+            if left_ss > left_subMax :
+                left_subMax = left_ss
+
+        for one in target_seq[mid:]:
+            right_ss += one
+            if right_ss > right_subMax:
+                right_subMax = right_ss
+
+        center = left_subMax + right_subMax 
+
+        if center > leftMax:
             if center > rigthMax:
-                return center
-        
-        if center > rigthMax: # 경계에 위치한 친구들이 제일 큰 경우 그 친구들 리턴
-            if center > leftMax:
                 return center 
-
-        # 왼쪽이 제일 큰 경우 
-        if leftMax > rigthMax :
-
-            #오른쪽의 합이 중앙의 뺏긴 값보다 크면 오른쪽이랑 더해서 리턴
-            # 작으면 뺏긴 값 체크 
+        
+        if leftMax > center:
+            if leftMax > rigthMax:
+                return leftMax 
             
+        if rigthMax > center:
+            if rigthMax > leftMax:
+                return rigthMax 
+        
 
-            # 경계에 뺏긴 값이 양수인지 확인
-            if target_seq[mid+1] > 0 : 
-                return leftMax + target_seq[mid+1] # 양수면 더해서 리턴
-            else :
-                return leftMax # 아니면 걍 리턴  
+
+
+
+# seq = (1,-2,3,-4,5,-3,8,-9,22)
+
+# n = len(seq) 
+# print(find_mss(seq, n))
+   # (1,-2,3,-4,5,-3,8,-9,22)
+    # (-1,-2,-3,-4,-5)
+    # (1,3,-1,2,4)
+    # (1,-3,5,-7,10,-9,6,-4,2)
+    # (4, -3, 5, -2, -1, 2, 6, -2)
+# seq = (4, -3, 5, -2, -1, 2, 6, -2)
+
+stage = int(sys.stdin.readline())
+request = [0] * stage 
+
+for iteration in range(stage):
+    sys.stdin.readline()
+    request[iteration] = tuple(map(int,sys.stdin.readline().split()))
+
+output = ""
+
+for seq in request:
+
+    n = len(seq)
+    output += "%s\n"%find_mss(seq, n)
+
+
+print(output)
