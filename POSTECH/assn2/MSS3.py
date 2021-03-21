@@ -1,6 +1,6 @@
 import sys
 import operator 
-from functools import reduce
+# from functools import reduce
 # seq = tuple(map(int,sys.stdin.readline().split()))
 
 
@@ -9,46 +9,58 @@ from functools import reduce
     # (1,3,-1,2,4)
     # (1,-3,5,-7,10,-9,6,-4,2)
     # (4, -3, 5, -2, -1, 2, 6, -2)
-seq = (4, -3, 5, -2, -1, 2, 6, -2)
-n = len(seq) 
+# seq = (4, -3, 5, -2, -1, 2, 6, -2)
+# n = len(seq) 
 
-print("len", n)
-
-
+# print("len", n)
 
 
 
 
+stage = int(sys.stdin.readline())
+request = [0] * stage 
 
-max_element = seq[0] 
+for iteration in range(stage):
+    sys.stdin.readline()
+    request[iteration] = tuple(map(int,sys.stdin.readline().split()))
 
-for one in seq:
-    if operator.gt(one, max_element):
-        max_element = one
+output = ""
 
-
-local_sum = 0
-max_sum = max_element 
+for seq in request:
 
 
-start = 0 
-for idx, one in enumerate(seq):
+    max_element = seq[0] 
+
+    for one in seq:
+        if operator.gt(one, max_element):
+            max_element = one
+
+
     local_sum = 0
+    max_sum = max_element 
 
-    
-    for o in seq[start:idx+1]:
-        local_sum = operator.add(local_sum, o) 
 
-    if operator.gt(0,local_sum):
-        start = operator.add(idx,1)
+    start = 0 
+    for idx, one in enumerate(seq):
+        local_sum = 0
+
         
-    elif operator.gt(local_sum, max_sum ): 
-        max_sum = local_sum
+        for o in seq[start:idx+1]:
+            local_sum = operator.add(local_sum, o) 
 
-    # print("now start : ",start)
-    # print("now idx : " , idx)
-    # print("now local_sum :", local_sum)
-    # print()
+        if operator.gt(0,local_sum):
+            start = operator.add(idx,1)
+            
+        elif operator.gt(local_sum, max_sum ): 
+            max_sum = local_sum
+
+        # print("now start : ",start)
+        # print("now idx : " , idx)
+        # print("now local_sum :", local_sum)
+        # print()
 
 
-print(max_sum)
+    output += "%s\n"%max_sum
+
+
+print(output)
