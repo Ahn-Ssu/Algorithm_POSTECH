@@ -31,22 +31,25 @@ def find_back(target_idx, end):
 # (1,-2,3,-4,5,-3,8,-9,22)
 # (-1,-2,-3,-4,-5)
 # (1,3,-1,2,4)
-seq = (1,3,-1,2,4)
+# (1,-3,5,-7,10,-9,6,-4,2)
+seq = (1,-3,5,-7,10,-9,6,-4,2)
 print(seq)
 
-max = operator.add(seq[0], seq[1])
+max_value = seq[0]
 max_idx = 0
 length = 1
 
-for idx in range(1,len(seq)-1,1):
 
-    if max < (operator.add(seq[idx], seq[idx+1])):
-        max = operator.add(seq[idx], seq[idx+1])
-        max_idx = idx
-        if operator.eq(length, 1):
-            length += 1
-        
+
+for i  in range(len(seq)):
     
+    if operator.gt(seq[i], max_value):
+        
+        max_value = seq[i]
+        max_idx = i
+        
+               
+
 
 
 
@@ -57,6 +60,7 @@ seq_len = len(seq)
 
 
 while front >= 0 : 
+    
 
     if operator.gt(seq[front], 0 ): # seq
         max_idx = operator.add(max_idx, -1)
@@ -69,18 +73,22 @@ while front >= 0 :
         sub_idx = find_front(front)
 
         if operator.ne(sub_idx, -1):
+            
             if(reduce(operator.add , seq[sub_idx:max_idx]) > 0):
                 length += operator.sub(max_idx, sub_idx)
                 max_idx = sub_idx
                 front = max_idx -1
             
             else:
-                break
+                front = sub_idx - 1
         else:
             break
 
+print("max_dix", max_idx)
+print("length", length)
 
 while back < seq_len:
+    print("돌아1")
 
     if operator.gt(seq[back], 0):
         length = operator.add(length, 1)
@@ -88,11 +96,17 @@ while back < seq_len:
 
     else:
         sub_idx = find_back(back, seq_len)
+        print("sub_idx",sub_idx)
+        print("back :", back)
 
         if operator.ne(sub_idx, -1):
-            if(reduce(operator.add , seq[sub_idx:back:-1]) > 0 ):
-                length += opeartor.sub(sub_idx, back)
+            print("back sum",reduce(operator.add , seq[sub_idx:back-1:-1]))
+            if(reduce(operator.add , seq[sub_idx:back-1:-1]) > 0 ):
+                length += operator.sub(sub_idx, back)
                 back = max_idx + length
+            
+            else:
+                back = sub_idx +1
 
         else:
             break
