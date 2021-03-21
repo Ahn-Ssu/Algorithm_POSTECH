@@ -6,19 +6,26 @@ from functools import reduce
 
 
 def find_mss(target_seq, n):
+    # print("-------in---------")
+    # print("target_seq :",target_seq)
+    # print("now n : ", n)
+
 
     if n == 1 : 
+        # print("n==1 out")
         return target_seq[0]
     elif n == 2 :
         local_max = target_seq[0]
-
+        
         for one in target_seq:
             if one > local_max:
                 local_max = one
             
         if target_seq[0]+target_seq[1] > local_max:
+            # print("n==2 out")
             return target_seq[0]+target_seq[1]
         else:
+            # print("n==2 out")
             return local_max
     
     elif n == 3 :
@@ -28,23 +35,28 @@ def find_mss(target_seq, n):
             if one > local_max:
                 local_max = one
         
-        for idx in range(len(n-1)):
+        for idx in range(n-1):
             if target_seq[idx]+target_seq[idx+1] > local_max:
                 local_max = target_seq[idx]+target_seq[idx+1]
-        
+        # print("n==3 out")
         return local_max
 
     else:
 
         mid = int(n/2)
-        # print("now mid :",mid)
+        
         # print("now seq :", target_seq)
-        leftMax = find_mss(target_seq[:mid], mid)
-        rigthMax = find_mss(target_seq[mid:], mid)
+        # print("now mid :",mid)
+        leftMax = find_mss(target_seq[:mid], len(target_seq[:mid]))
+        rigthMax = find_mss(target_seq[mid:], len(target_seq[mid:]))
         # center = find_mss(target_seq[mid:mid+1], 2)
 
         left_subMax = target_seq[mid-1]
         right_subMax = target_seq[mid]
+
+        # print("mid :", mid)
+        # print("left_subMax[mid] :", left_subMax)
+        # print("right_subMax[mid] :", right_subMax)
 
         left_ss = 0
         right_ss = 0
@@ -59,19 +71,21 @@ def find_mss(target_seq, n):
             if right_ss > right_subMax:
                 right_subMax = right_ss
 
-        center = left_subMax + right_subMax 
-
-        if center > leftMax:
-            if center > rigthMax:
-                return center 
         
-        if leftMax > center:
-            if leftMax > rigthMax:
-                return leftMax 
+        center = left_subMax + right_subMax 
+        
+        return max(center, leftMax, rigthMax)
+        # if center > leftMax:
+        #     if center > rigthMax:
+        #         return center 
+        
+        # if leftMax > center:
+        #     if leftMax > rigthMax:
+        #         return leftMax 
             
-        if rigthMax > center:
-            if rigthMax > leftMax:
-                return rigthMax 
+        # if rigthMax > center:
+        #     if rigthMax > leftMax:
+        #         return rigthMax 
         
 
 
