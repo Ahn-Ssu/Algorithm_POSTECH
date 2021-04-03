@@ -112,24 +112,6 @@ def stacking(block_size, request_block):
 
 
 
-
-# block_size = (2,4,8,16,32)
-# block_num = [10,10,10,10,10]
-# used = [0,0,0,0,0]
-
-# request_block = (5,5,5)
-    
-    
-
-# value = stacking(block_size, request_block)
-
-# if value == -1 :
-#     print(value)
-# else:
-#     for i in used:
-#         print(i, end=" s")
-
-
 stage = int(sys.stdin.readline())
 sizes = [0] * stage
 blocks = [0] * stage
