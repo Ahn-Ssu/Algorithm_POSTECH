@@ -46,83 +46,40 @@ class Graph:
             print()
 
 
-def DFS(G):
-    global min_W
-    
-    root = G.VertexList[0]
-    rootAdj = G.Adj[root.id]
+def DFS(G, vertex, parent):
+    global min_W, find_idx
 
-    root.visited = True
-    root.idx_ = 1
-
-    while rootAdj:
-        nextNode = G.VertexList[rootAdj.id]
-
-        if nextNode.visited == False:
-            
-
-            low = explore(G, nextNode, root) 
-
-            if low > root.idx_ :
-                # print("루트에서 바로 커트 하면 됩니다 손님!!!")
-                print("현재 위치 [{}] -- {} -- [{}]".format(root.id, rootAdj.weight, rootAdj.id))
-                min_W = min(rootAdj.weight, min_W)
-
-        rootAdj = rootAdj.next
-
-    
-
-def explore(G, vertex, parent):
-    global find_idx, min_W
     vertex.visited = True
-    
     vertex.idx_ = find_idx
-    find_idx += 1
+    find_idx += 1 
 
-    early = vertex.idx_
+    result = vertex.idx_
 
-    temp = G.Adj[vertex.id]
-    low = -1
-    while temp:
+    next_V = G.Adj[vertex.id]
 
-        if temp.id == parent.id : # 부모에게 바로 돌아가는 길 외에 길을 확인해야 함
-            # print("저 {}에게 얘 {}는 부모노드예요. = ".format(vertex.id, parent.id))
-            temp = temp.next
+    while next_V:
+
+        if next_V.id == parent.id:
+            next_V = next_V.next
             continue
+
+        if G.VertexList[next_V.id].visited == False :
+
+            low = DFS(G, G.VertexList[next_V.id], vertex)
         
-        nextNode = G.VertexList[temp.id]
-        # print("parent.id {}, idx {}".format(parent.id, parent.idx_))
-        # print("vertex.id {}, idx {}".format(vertex.id, vertex.idx_))
-        # print("nextN  id {}, idx {}".format(nextNode.id, nextNode.idx_))
+            if low > vertex.idx_ :
+                ans_list.append((vertex.id, next_V.id))
 
-        if not nextNode.visited:
-            low = explore(G, nextNode, vertex) # 서칭한 노드 중에, 제일 빨랐던 idx의 값을 리턴
-            early = min(early, low)
-        # else :
-        #     early = min(early, nextNode.idx_)
+            result = min(result, low)
         
-        if vertex.idx_ > nextNode.idx_ : # 상위 노드를 만남 
-            # print("상위 노드 만났어요. 지금 노드는 {}/{} 이고, 만난 노드는 {}/{}예요".format(vertex.id, vertex.idx_, nextNode.id, nextNode.idx_))
-            early = min(early, nextNode.idx_ )
+        else:
+            result = min(result, G.VertexList[next_V.id].id)
 
-        if low > vertex.idx_:
-            # print("아래 검색에서 저쪽으로 밖에 길이 없다고 결과가 나왔습니다!")
-            # print("현재 위치 [{}] -- {} -- [{}]".format(vertex.id, temp.weight, temp.id))
-            min_W = min(temp.weight, min_W)
+
+        next_V = next_V.next
+
+    return result
         
-
-        temp = temp.next
-
-    # if low == vertex.idx_:
-        # print("여기서 커트 해야 합니당!")
-
-    
-    
-    # print("현재 vertex {}/{} 노드에서 보았습니다. 리턴할 early값은 {}예요".format(vertex.id,vertex.idx_,early))
-    # if vertex.id == 3 :
-    #     input()
-    return early
-
 
 
 stage = int(sys.stdin.readline())
@@ -130,8 +87,6 @@ output = ""
 
 for iteration in range(stage): # 입력한 테스트 케이스 iteration 
     find_idx = 1
-    min_W = sys.maxsize
-
     node_num, edge_num = tuple(map(int,sys.stdin.readline().split()))
 
     # if node_num == (edge_num +1) :
@@ -158,18 +113,38 @@ for iteration in range(stage): # 입력한 테스트 케이스 iteration
         graph.add_edge(u,v,w)
         
 
+    ans_list = [] 
     # graph.print_Adj()
-    DFS(graph)
+    for i in range(1,node_num):
+        DFS(graph, graph.VertexList[i], graph.VertexList[0])
 
     # for node in graph.VertexList:
     #     print("id : {}, visit idx_ : {}".format(node.id, node.idx_))
-    if min_W == sys.maxsize:
-        output += "-1\n"
-    else:
+    # if min_W == sys.maxsize:
+    #     output += "%s\n"%-1
+    # else:
+    #     output += "%s\n"%min_W
+    if len(ans_list):
+        min_W = sys.maxsize
+        
+        for u, v in ans_list:
+            temp = graph.Adj[u]
+
+            while temp:
+                
+
+                if temp.id == v :
+                    min_W = min(min_W, temp.weight)
+                
+                temp = temp.next
+
         output += "%s\n"%min_W
+    else:
+        output += "-1\n"
+
         
 
-print(output)
+print(output, end="")
 
 # ((0,1),(1,2),(0,2))
 #((0,1), (1,2),(1,3),(3,2),(2,4),(4,1)) 
