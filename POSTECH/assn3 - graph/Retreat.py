@@ -1,5 +1,5 @@
 import sys
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit(10**6)
 
 
 class AdjNode:
@@ -128,27 +128,39 @@ for iteration in range(stage): # 입력한 테스트 케이스 iteration
     min_W = sys.maxsize
 
     node_num, edge_num = tuple(map(int,sys.stdin.readline().split()))
-    
-    graph = Graph(node_num)
-    s_len = sys.maxsize
-    E = [0] * edge_num
-    
-    for idx in range(edge_num):
-        E[idx] = tuple(map(int,sys.stdin.readline().split()))
-    # E = ((0,1), (1,4), (4,5), (5,2), (2,0), (2,3), (3,6), (6,9), (9,8), (8,10), (10,7), (10,12), (12,13), (11,13), (11,9))
-    for u, v, w in E:
-        graph.add_edge(u,v,w)
+
+    if node_num == (edge_num +1) :
+
+        for idx in range(edge_num):
+            E[idx] = tuple(map(int,sys.stdin.readline().split()))
         
+        for _, __, w in E:
+            min_W = min(min_W, w)
 
-    graph.print_Adj()
-    DFS(graph)
-
-    for node in graph.VertexList:
-        print("id : {}, visit idx_ : {}".format(node.id, node.idx_))
-    if min_W == sys.maxsize:
-        output += "%s\n"%-1
-    else:
         output += "%s\n"%min_W
+
+    else:
+    
+        graph = Graph(node_num)
+        s_len = sys.maxsize
+        E = [0] * edge_num
+        
+        for idx in range(edge_num):
+            E[idx] = tuple(map(int,sys.stdin.readline().split()))
+        # E = ((0,1), (1,4), (4,5), (5,2), (2,0), (2,3), (3,6), (6,9), (9,8), (8,10), (10,7), (10,12), (12,13), (11,13), (11,9))
+        for u, v, w in E:
+            graph.add_edge(u,v,w)
+            
+
+        # graph.print_Adj()
+        DFS(graph)
+
+    # for node in graph.VertexList:
+        # print("id : {}, visit idx_ : {}".format(node.id, node.idx_))
+        if min_W == sys.maxsize:
+            output += "%s\n"%-1
+        else:
+            output += "%s\n"%min_W
         
 
 print(output)
