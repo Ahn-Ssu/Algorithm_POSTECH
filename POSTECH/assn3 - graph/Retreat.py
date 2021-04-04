@@ -46,34 +46,77 @@ class Graph:
             print()
 
 
-find_idx = 1
-
 def DFS(G):
-    
+    global min_W
     for idx in range(G.V_num): # visited false init
         G.VertexList[idx] = Vertex(id=idx, visited= False)
     
-    for node in G.VertexList:
+    root = G.VertexList[0]
+    rootAdj = G.Adj[root.id]
+    nextNode = G.VertexList[rootAdj.id]
 
-        if not node.visited:
-            explore(G, node)
+    root.visited = True
+    root.idx_ = 1
 
-def explore(G, vertex):
-    global find_idx
+    low = explore(G, nextNode, root) 
+
+    if low > 1 :
+        # print("루트에서 바로 커트 하면 됩니다 손님!!!")
+        # print("현재 위치 [{}] -- {} -- [{}]".format(root.id, rootAdj.weight, rootAdj.id))
+        min_W = min(rootAdj.weight, min_W)
+
+    
+
+def explore(G, vertex, parent):
+    global find_idx, min_W
     vertex.visited = True
-    vertex.idx_ = find_idx
     find_idx += 1
+    vertex.idx_ = find_idx
+    
 
+    early = vertex.idx_
 
     temp = G.Adj[vertex.id]
+    low = -1
     while temp:
 
-        if not G.VertexList[temp.id].visited:
+        if temp.id == parent.id : # 부모에게 바로 돌아가는 길 외에 길을 확인해야 함
+            # print("저 {}에게 얘 {}는 부모노드예요. = ".format(vertex.id, parent.id))
+            temp = temp.next
+            continue
         
-            explore(G, G.VertexList[temp.id])
+        nextNode = G.VertexList[temp.id]
+        # print("parent.id {}, idx {}".format(parent.id, parent.idx_))
+        # print("vertex.id {}, idx {}".format(vertex.id, vertex.idx_))
+        # print("nextN  id {}, idx {}".format(nextNode.id, nextNode.idx_))
+
+        if not nextNode.visited:
+            low = explore(G, nextNode, vertex) # 서칭한 노드 중에, 제일 빨랐던 idx의 값을 리턴
+            early = min(early, low)
+        
+        if vertex.idx_ > nextNode.idx_ : # 상위 노드를 만남 
+            # print("상위 노드 만났어요. 지금 노드는 {}/{} 이고, 만난 노드는 {}/{}예요".format(vertex.id, vertex.idx_, nextNode.id, nextNode.idx_))
+            early = min(early, nextNode.idx_ )
+
+        if low > vertex.idx_:
+            # print("아래 검색에서 저쪽으로 밖에 길이 없다고 결과가 나왔습니다!")
+            # print("현재 위치 [{}] -- {} -- [{}]".format(vertex.id, temp.weight, temp.id))
+            min_W = min(temp.weight, min_W)
+        
+
 
 
         temp = temp.next
+
+    # if low == vertex.idx_:
+    #     print("여기서 커트 해야 합니당!")
+
+    
+    
+    # print("현재 vertex {}/{} 노드에서 보았습니다. 리턴할 early값은 {}예요".format(vertex.id,vertex.idx_,early))
+    # if vertex.id == 3 :
+    #     input()
+    return early
 
 
 
@@ -81,7 +124,8 @@ stage = int(sys.stdin.readline())
 output = ""
 
 for iteration in range(stage): # 입력한 테스트 케이스 iteration 
-
+    find_idx = 1
+    min_W = sys.maxsize
 
     node_num, edge_num = tuple(map(int,sys.stdin.readline().split()))
     
@@ -101,10 +145,10 @@ for iteration in range(stage): # 입력한 테스트 케이스 iteration
 
     for node in graph.VertexList:
         print("id : {}, visit idx_ : {}".format(node.id, node.idx_))
-    # DFS(graph)
-    # if s_len == sys.maxsize:
-    #     s_len = -1
-    # output += "%s\n"%s_len
+    if min_W == sys.maxsize:
+        output += "%s\n"%-1
+    else:
+        output += "%s\n"%min_W
         
 
 print(output)
