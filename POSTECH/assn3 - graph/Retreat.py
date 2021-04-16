@@ -65,7 +65,7 @@ def DFS(G):
 
             if low > root.idx_ :
                 # print("루트에서 바로 커트 하면 됩니다 손님!!!")
-                print("현재 위치 [{}] -- {} -- [{}]".format(root.id, rootAdj.weight, rootAdj.id))
+                # print("현재 위치 [{}] -- {} -- [{}]".format(root.id, rootAdj.weight, rootAdj.id))
                 min_W = min(rootAdj.weight, min_W)
 
         rootAdj = rootAdj.next

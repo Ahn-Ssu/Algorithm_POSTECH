@@ -1,8 +1,1 @@
-import operator
-
-usage = ()
-usage += (1,)
-
-
-usage = operator.concat(usage, (1,))
-print(usage)
+print(len(((0,1), (1,4), (4,5), (5,2), (2,0), (2,3), (3,6), (6,9), (9,8), (8,10), (10,7), (10,12), (12,13), (11,13), (11,9))))
