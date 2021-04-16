@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 import sys
+import operator 
 import heapq
 
 
@@ -29,26 +31,38 @@ for i in range(stage):
     while amp_list: # amp_list의 끝까지 회전
 
         while amp_list:
-            if amp_list[0][0] <= now_range:
+            if operator.le(amp_list[0][0] , now_range):
+
+                if operator.ge(operator.add(now_range , amp_list[0][1]) , goal): # 입력이 정렬되고 힙이 망가질때의 대비;
+                    # now_range += amp_list[0][1]
+                    # amp_count += 1
+                    temp = heapq.heappop(amp_list)
+                    heapq.heappush(h, -temp[1])
+                    break
+
                 temp = heapq.heappop(amp_list)
                 heapq.heappush(h, -temp[1])
             else:
                 # 일단 현재 사거리에 있는 친구들을 다 주움 
                 break 
-        
-        if not h and (now_range<goal): # 힙에서 더이상 꺼낼거 없고, 목표 사거리 달성 못한 경우
+
+        # if now_range >= goal:
+        #     output += "%s\n"%amp_count
+        #     break
+
+        if operator.and_(operator.not_(h), (operator.lt(now_range, goal))): # 힙에서 더이상 꺼낼거 없고, 목표 사거리 달성 못한 경우
             output += "%s\n"%-1
             break
 
         while h:    
-            now_range += heapq.heappop(h)*(-1)
-            amp_count += 1 
+            now_range = operator.add(now_range, operator.neg(heapq.heappop(h)))
+            amp_count = operator.add(amp_count, 1 )
 
-            if now_range >= goal:
+            if operator.ge(now_range, goal):
                 output += "%s\n"%amp_count
                 break
         
-        if not h:
+        if operator.not_(h):
             if amp_list:
                 continue
             else:
