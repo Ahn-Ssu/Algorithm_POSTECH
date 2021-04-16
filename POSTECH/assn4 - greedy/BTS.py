@@ -37,11 +37,11 @@ for i in range(stage):
                     # now_range += amp_list[0][1]
                     # amp_count += 1
                     temp = heapq.heappop(amp_list)
-                    heapq.heappush(h, -temp[1])
+                    heapq.heappush(h, (-temp[1],temp[1]))
                     break
 
                 temp = heapq.heappop(amp_list)
-                heapq.heappush(h, -temp[1])
+                heapq.heappush(h, (-temp[1],temp[1]))
             else:
                 # 일단 현재 사거리에 있는 친구들을 다 주움 
                 break 
@@ -55,7 +55,8 @@ for i in range(stage):
             break
 
         while h:    
-            now_range = operator.add(now_range, operator.neg(heapq.heappop(h)))
+            # now_range = operator.add(now_range, operator.neg(heapq.heappop(h)))
+            now_range = operator.add(now_range, heapq.heappop(h)[1])
             amp_count = operator.add(amp_count, 1 )
 
             if operator.ge(now_range, goal):
