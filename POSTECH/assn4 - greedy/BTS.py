@@ -1,22 +1,23 @@
-# -*- coding: utf-8 -*-
 import sys
 import heapq
 
 
 
 stage = int(sys.stdin.readline())
-
+output = ""
 for i in range(stage):
     amp_n, now_range, goal = map(int,sys.stdin.readline().split())
 
-    amp_list = [0]*stage
+    amp_list = []
     
     for k in range(amp_n):
         amp_info = tuple(map(int,sys.stdin.readline().split()))
 
-        amp_list[k]=amp_info
+        heapq.heappush(amp_list, amp_info)
 
-    amp_list.sort() # 거리 순으로 정렬
+        # amp_list[k] = amp_info
+
+    # amp_list.sort() # 거리 순으로 정렬
 
     # 현재 사거리 까지 줍줍 -> Q에 넣음
     # Q에는 파워의 세기를 순서대로 넣음 
@@ -27,39 +28,32 @@ for i in range(stage):
     amp_count = 0 
     while amp_list: # amp_list의 끝까지 회전
 
-
-        checked_idx = 0 # 어디까지 확인 했는지 기록
-        
-        for idx, (amp_loca, amp_power) in enumerate(amp_list):
-
-            checked_idx = idx
-            if amp_loca <= now_range: # 사거리안에 amp가 위치하면 Q에 저장 
-                heapq.heappush(h, -amp_power) # 음수 붙여서 max Q로 활용
-            else :
-                # 더 이상 사거리에 있는 친구들이 없음
-                break
+        while amp_list:
+            if amp_list[0][0] <= now_range:
+                temp = heapq.heappop(amp_list)
+                heapq.heappush(h, -temp[1])
+            else:
+                # 일단 현재 사거리에 있는 친구들을 다 주움 
+                break 
         
         if not h and (now_range<goal): # 힙에서 더이상 꺼낼거 없고, 목표 사거리 달성 못한 경우
-            print(-1)
+            output += "%s\n"%-1
             break
 
+        while h:    
+            now_range += heapq.heappop(h)*(-1)
+            amp_count += 1 
+
+            if now_range >= goal:
+                output += "%s\n"%amp_count
+                break
         
-        now_range += heapq.heappop(h)*(-1)
-        amp_count += 1 
-        # print(now_range)
-
-        if now_range >= goal:
-            print(amp_count)
-            break
-
-        amp_list = amp_list[checked_idx:] #이미 확인해서 q에 담긴 친구들은 리스트에서 제거 
+        if not h:
+            if amp_list:
+                continue
+            else:
+                break
 
 
 
-am_n, now_range, goal = (2,4,14)
-
-amp_list = [
-    (2, 3),
-    (4, 7)
-]
-
+print(output)
