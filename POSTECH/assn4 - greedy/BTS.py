@@ -63,12 +63,14 @@ for i in range(stage):
                 output += "%s\n"%amp_count
                 break
         
+
+        if operator.ge(now_range, goal):
+                # output += "%s\n"%amp_count
+                break
+
         if operator.not_(h):
             if amp_list:
                 continue
             else:
                 break
-
-
-
 print(output)
