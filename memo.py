@@ -1,1 +1,20 @@
-print(len(((0,1), (1,4), (4,5), (5,2), (2,0), (2,3), (3,6), (6,9), (9,8), (8,10), (10,7), (10,12), (12,13), (11,13), (11,9))))
+
+
+li = [list()*5]
+print(li)
+
+li = []
+for i in range(5):
+    print(id(list()))
+    li.append(list())
+    
+print(li)
+
+for idx, i in enumerate(li):
+    print(id(i))
+
+    i.append(idx)
+
+
+print(li)
+
